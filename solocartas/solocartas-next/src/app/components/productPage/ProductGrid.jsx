@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CardProduct from './CardProduct';
 
 const allProducts = [
-  { id: 1, name: 'Charizard VMAX', price: 24990, store: 'Tienda Friki', image: 'https://via.placeholder.com/200x300?text=Charizard' },
+  { id: 1, name: 'Charizard VMAX', price: 24990, store: 'Tienda Friki', image: 'https://assets.pokemon.com/static-assets/content-assets/cms2-es-xl/img/cards/web/SWSH45/SWSH45_LA_SV107.png' },
   { id: 2, name: 'Blue-Eyes White Dragon', price: 18990, store: 'Geeklandia', image: 'https://via.placeholder.com/200x300?text=Blue-Eyes' },
   { id: 3, name: 'Dark Magician', price: 21990, store: 'Mundo Duelista', image: 'https://via.placeholder.com/200x300?text=Magician' },
   { id: 4, name: 'Pikachu Holo', price: 12990, store: 'CardZone', image: 'https://via.placeholder.com/200x300?text=Pikachu' },
