@@ -8,7 +8,7 @@ const allProducts = [
   { 
     id: 1,
     name: 'Charizard VMAX',
-    image: 'https://assets.pokemon.com/static-assets/content-assets/cms2-es-xl/img/cards/web/SWSH45/SWSH45_LA_SV107.png',
+    image: 'https://mesa1.cl/cdn/shop/products/981fb977-e4a7-45bc-b61c-f9164b19b64e_c6cdc997-1c21-41ec-ac5b-e82d32ae806f.png?v=1696303525',
     generalInfo: {
       setName: 'Sword & Shield: Darkness Ablaze',
       cardNumber: '020/189',
@@ -24,7 +24,7 @@ const allProducts = [
         price: 24990,
         condition: 'Near Mint',
         stock: 3,
-        url: 'https://tiendafriki.cl/products/charizard-vmax',
+        url: '',
         rating: 4.8
       },
       {
@@ -33,7 +33,7 @@ const allProducts = [
         price: 26990,
         condition: 'Near Mint',
         stock: 1,
-        url: 'https://geeklandia.cl/products/charizard-vmax',
+        url: '',
         rating: 4.5
       },
       {
@@ -42,7 +42,7 @@ const allProducts = [
         price: 23990,
         condition: 'Lightly Played',
         stock: 2,
-        url: 'https://cardzone.cl/products/charizard-vmax',
+        url: '',
         rating: 4.7
       }
     ],
