@@ -1,22 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import CardProduct from './CardProduct';
 
-const allProducts = [
-  { id: 1, name: 'Charizard VMAX', price: 24990, store: 'Tienda Friki', image: 'https://mesa1.cl/cdn/shop/products/981fb977-e4a7-45bc-b61c-f9164b19b64e_c6cdc997-1c21-41ec-ac5b-e82d32ae806f.png?v=1696303525' },
-  { id: 2, name: 'Blue-Eyes White Dragon', price: 18990, store: 'Geeklandia', image: 'https://via.placeholder.com/200x300?text=Blue-Eyes' },
-  { id: 3, name: 'Dark Magician', price: 21990, store: 'Mundo Duelista', image: 'https://via.placeholder.com/200x300?text=Magician' },
-  { id: 4, name: 'Pikachu Holo', price: 12990, store: 'CardZone', image: 'https://via.placeholder.com/200x300?text=Pikachu' },
-  { id: 5, name: 'Mewtwo GX', price: 15990, store: 'Cartas Top', image: 'https://via.placeholder.com/200x300?text=Mewtwo' },
-  { id: 6, name: 'One Piece Luffy Rare', price: 28990, store: 'LuffyStore', image: 'https://via.placeholder.com/200x300?text=Luffy' },
-];
 
 export default function ProductGrid() {
   const [search, setSearch] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    fetch("https://te-odio-docker-back.vercel.app/cards/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error al obtener los productos");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+  if (loading) return <p>Cargando productos...</p>;
+  if (error) return <p>Error: {error}</p>;
 
-  const filteredProducts = allProducts.filter((product) => {
+
+  const filteredProducts = products.filter((product) => {
     const matchesName = product.name.toLowerCase().includes(search.toLowerCase());
     const matchesPrice = maxPrice ? product.price <= parseInt(maxPrice) : true;
     return matchesName && matchesPrice;
