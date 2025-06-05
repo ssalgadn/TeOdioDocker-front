@@ -46,6 +46,7 @@ const allProducts = [
         rating: 4.7
       }
     ],
+    comments: [],
     priceHistory: [
       { date: '2025-01-01', avgPrice: 28990 },
       { date: '2025-02-01', avgPrice: 26990 },
