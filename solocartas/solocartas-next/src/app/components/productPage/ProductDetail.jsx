@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { MessageCircle, Send, UserCircle } from 'lucide-react';
 
 ChartJS.register(
   CategoryScale,
@@ -31,7 +32,7 @@ export default function ProductDetail({ product }) {
   const chartData = {
     labels: product.priceHistory.map(item => {
       const date = new Date(item.date);
-      return `${date.getMonth() + 1}/${date.getFullYear()}`;
+      return `${date.getMonth() + 1}/${date.getFullYear()}`; // Formato MM/YYYY
     }),
     datasets: [
       {
@@ -63,6 +64,9 @@ export default function ProductDetail({ product }) {
       },
     },
   };
+
+  // Asumiendo que product.comments es un array, o undefined/null
+  const comments = product.comments || [];
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
@@ -121,7 +125,7 @@ export default function ProductDetail({ product }) {
       {/* Gráfico de precios */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Evolución de precios</h2>
-        <div className="h-[300px]">
+        <div className="h-[300px]"> {/* Contenedor con altura definida para el gráfico */}
           <Line options={chartOptions} data={chartData} />
         </div>
       </div>
@@ -160,6 +164,82 @@ export default function ProductDetail({ product }) {
           ))}
         </div>
       </div>
-    </div>
+      
+      {/* Comments Section - MOVIDO AQUÍ DENTRO DEL DIV PRINCIPAL */}
+      <div className="mt-10 pt-8 border-t border-gray-200">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+          <MessageCircle size={28} className="mr-3 text-blue-600" />
+          Comentarios
+        </h2>
+        
+        {/* Comment Submission Form (UI Only) */}
+        <div className="mb-8 p-6 bg-gray-50 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-700 mb-3">Deja tu comentario</h3>
+          <textarea 
+            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out" 
+            rows="4" 
+            placeholder="Escribe tu opinión sobre este producto..."
+          ></textarea>
+          <button 
+            type="button" 
+            className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out flex items-center"
+          >
+            <Send size={18} className="mr-2" />
+            Enviar Comentario
+          </button>
+        </div>
+
+        {/* List of Comments */}
+        <div className="space-y-6">
+          {/* Sample Comment 1 (Puedes eliminar estos si vas a mapear los reales) */}
+          <div className="p-5 bg-white rounded-lg shadow border border-gray-100">
+            <div className="flex items-center mb-3">
+              <UserCircle size={32} className="mr-3 text-gray-400" />
+              <div>
+                <p className="font-semibold text-gray-800">Usuario Anónimo</p>
+                <p className="text-xs text-gray-500">Hace 2 días</p>
+              </div>
+            </div>
+            <p className="text-gray-700 leading-relaxed">
+              ¡Excelente carta! Llegó en perfectas condiciones y el precio fue el mejor que encontré. Muy recomendable.
+            </p>
+          </div>
+
+          {/* Sample Comment 2 (Puedes eliminar estos si vas a mapear los reales) */}
+          <div className="p-5 bg-white rounded-lg shadow border border-gray-100">
+            <div className="flex items-center mb-3">
+              <UserCircle size={32} className="mr-3 text-gray-400" />
+              <div>
+                <p className="font-semibold text-gray-800">ColeccionistaTCG</p>
+                <p className="text-xs text-gray-500">Hace 1 semana</p>
+              </div>
+            </div>
+            <p className="text-gray-700 leading-relaxed">
+              Un poco cara para mi gusto, pero es una carta difícil de conseguir. El servicio de la tienda fue rápido.
+            </p>
+          </div>
+          
+          {/* Mapeo de comentarios reales */}
+          {comments.length > 0 ? (
+            comments.map((comment, index) => (
+              <div key={comment.id || index} className="p-5 bg-white rounded-lg shadow border border-gray-100"> {/* Usar comment.id si está disponible */}
+                <div className="flex items-center mb-3">
+                  <UserCircle size={32} className="mr-3 text-gray-400" />
+                  <div>
+                    <p className="font-semibold text-gray-800">{comment.user || 'Usuario Anónimo'}</p>
+                    <p className="text-xs text-gray-500">{comment.date ? new Date(comment.date).toLocaleDateString() : 'Fecha desconocida'}</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  {comment.text}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 italic">Aún no hay comentarios para este producto. ¡Sé el primero!</p>
+          )}
+        </div>
+      </div>
+    </div> // Cierre del div principal que envuelve todo el componente
   );
 }
