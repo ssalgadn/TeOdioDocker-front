@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import CardProduct from './CardProduct';
 import MultiRangeSlider from 'multi-range-slider-react';
 
@@ -19,6 +20,14 @@ const TYPES = [
 ];
 
 export default function ProductGrid() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ActualProductGrid />
+    </Suspense>
+  );
+}
+
+function ActualProductGrid() {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState('');
   const [sliderBaseMin, setSliderBaseMin] = useState(0);
