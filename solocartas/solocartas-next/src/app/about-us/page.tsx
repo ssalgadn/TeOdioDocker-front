@@ -1,4 +1,4 @@
-import TeamGitHub from '@/app/components/aboutPage/TeamGitHub';
+import TeamGitHub from '@/app/components/aboutPage/TeamGithub';
 
 export default function AboutUs() {
   return (
