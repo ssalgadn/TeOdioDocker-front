@@ -13,6 +13,7 @@ import {
   Legend
 } from 'chart.js';
 import { MessageCircle, Send, UserCircle } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 ChartJS.register(
   CategoryScale,
@@ -25,14 +26,13 @@ ChartJS.register(
 );
 
 export default function ProductDetail({ product }) {
-  // Encontrar el precio más bajo entre todas las tiendas
+  const { isAuthenticated, user } = useAuth();
   const lowestPrice = Math.min(...product.stores.map(store => store.price));
   
-  // Configuración del gráfico
   const chartData = {
     labels: product.priceHistory.map(item => {
       const date = new Date(item.date);
-      return `${date.getMonth() + 1}/${date.getFullYear()}`; // Formato MM/YYYY
+      return `${date.getMonth() + 1}/${date.getFullYear()}`;
     }),
     datasets: [
       {
@@ -65,12 +65,10 @@ export default function ProductDetail({ product }) {
     },
   };
 
-  // Asumiendo que product.comments es un array, o undefined/null
   const comments = product.comments || [];
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
-      {/* Encabezado y imagen */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         <div className="relative">
           <img
@@ -95,7 +93,6 @@ export default function ProductDetail({ product }) {
             </span>
           </div>
 
-          {/* Información general */}
           <div className="border-t border-gray-200 pt-4">
             <h2 className="text-xl font-semibold mb-2">Información general</h2>
             <p className="text-gray-600 mb-4">{product.generalInfo.description}</p>
@@ -118,19 +115,38 @@ export default function ProductDetail({ product }) {
                 <dd className="text-gray-900">{new Date(product.generalInfo.releaseDate).toLocaleDateString()}</dd>
               </div>
             </dl>
+
+            {/* Botón Avísame cuando baje de precio */}
+            <div className="mt-6">
+              {isAuthenticated ? (
+                <button
+                  onClick={() => alert(`Se avisará al mail ${user?.email || 'registrado'} cuando este producto baje de precio.`)}
+                  className="w-full px-6 py-3 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+                >
+                  Avísame cuando baje de precio
+                </button>
+              ) : (
+                <div title="Debes iniciar sesión para esta opción" className="w-full">
+                  <button
+                    disabled
+                    className="w-full px-6 py-3 bg-gray-300 text-gray-500 font-semibold rounded-md cursor-not-allowed"
+                  >
+                    Avísame cuando baje de precio
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Gráfico de precios */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Evolución de precios</h2>
-        <div className="h-[300px]"> {/* Contenedor con altura definida para el gráfico */}
+        <div className="h-[300px]">
           <Line options={chartOptions} data={chartData} />
         </div>
       </div>
 
-      {/* Lista de tiendas */}
       <div>
         <h2 className="text-xl font-semibold mb-4">Disponible en tiendas</h2>
         <div className="grid grid-cols-1 gap-4">
@@ -165,24 +181,24 @@ export default function ProductDetail({ product }) {
         </div>
       </div>
       
-      {/* Comments Section - MOVIDO AQUÍ DENTRO DEL DIV PRINCIPAL */}
       <div className="mt-10 pt-8 border-t border-gray-200">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
           <MessageCircle size={28} className="mr-3 text-blue-600" />
           Comentarios
         </h2>
         
-        {/* Comment Submission Form (UI Only) */}
         <div className="mb-8 p-6 bg-gray-50 rounded-lg shadow">
           <h3 className="text-lg font-medium text-gray-700 mb-3">Deja tu comentario</h3>
           <textarea 
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out" 
+            className={`w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out ${!isAuthenticated ? 'bg-gray-100 cursor-not-allowed' : ''}`} 
             rows="4" 
-            placeholder="Escribe tu opinión sobre este producto..."
+            placeholder={isAuthenticated ? "Escribe tu opinión sobre este producto..." : "Debes iniciar sesión para comentar"}
+            disabled={!isAuthenticated}
           ></textarea>
           <button 
             type="button" 
-            className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out flex items-center"
+            className={`mt-4 px-6 py-2 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out flex items-center ${isAuthenticated ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+            disabled={!isAuthenticated}
           >
             <Send size={18} className="mr-2" />
             Enviar Comentario
@@ -191,38 +207,9 @@ export default function ProductDetail({ product }) {
 
         {/* List of Comments */}
         <div className="space-y-6">
-          {/* Sample Comment 1 (Puedes eliminar estos si vas a mapear los reales) */}
-          <div className="p-5 bg-white rounded-lg shadow border border-gray-100">
-            <div className="flex items-center mb-3">
-              <UserCircle size={32} className="mr-3 text-gray-400" />
-              <div>
-                <p className="font-semibold text-gray-800">Usuario Anónimo</p>
-                <p className="text-xs text-gray-500">Hace 2 días</p>
-              </div>
-            </div>
-            <p className="text-gray-700 leading-relaxed">
-              ¡Excelente carta! Llegó en perfectas condiciones y el precio fue el mejor que encontré. Muy recomendable.
-            </p>
-          </div>
-
-          {/* Sample Comment 2 (Puedes eliminar estos si vas a mapear los reales) */}
-          <div className="p-5 bg-white rounded-lg shadow border border-gray-100">
-            <div className="flex items-center mb-3">
-              <UserCircle size={32} className="mr-3 text-gray-400" />
-              <div>
-                <p className="font-semibold text-gray-800">ColeccionistaTCG</p>
-                <p className="text-xs text-gray-500">Hace 1 semana</p>
-              </div>
-            </div>
-            <p className="text-gray-700 leading-relaxed">
-              Un poco cara para mi gusto, pero es una carta difícil de conseguir. El servicio de la tienda fue rápido.
-            </p>
-          </div>
-          
-          {/* Mapeo de comentarios reales */}
           {comments.length > 0 ? (
             comments.map((comment, index) => (
-              <div key={comment.id || index} className="p-5 bg-white rounded-lg shadow border border-gray-100"> {/* Usar comment.id si está disponible */}
+              <div key={comment.id || index} className="p-5 bg-white rounded-lg shadow border border-gray-100">
                 <div className="flex items-center mb-3">
                   <UserCircle size={32} className="mr-3 text-gray-400" />
                   <div>
@@ -240,6 +227,6 @@ export default function ProductDetail({ product }) {
           )}
         </div>
       </div>
-    </div> // Cierre del div principal que envuelve todo el componente
+    </div>
   );
 }

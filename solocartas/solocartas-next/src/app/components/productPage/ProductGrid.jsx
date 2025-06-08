@@ -31,7 +31,7 @@ function ActualProductGrid() {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState('');
   const [sliderBaseMin, setSliderBaseMin] = useState(0);
-  const [sliderBaseMax, setSliderBaseMax] = useState(100000); // Default max, updated from products
+  const [sliderBaseMax, setSliderBaseMax] = useState(100000);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 100000 });
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedType, setSelectedType] = useState('');
@@ -52,7 +52,7 @@ function ActualProductGrid() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://te-odio-docker-back.vercel.app/cards/") // Consider fetching based on filters if API supports it
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cards/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener los productos");
@@ -83,7 +83,7 @@ function ActualProductGrid() {
         setProducts([]);
         setLoading(false);
       });
-  }, []); // Fetch all products once on mount
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -139,18 +139,18 @@ function ActualProductGrid() {
           <MultiRangeSlider
             min={sliderBaseMin}
             max={sliderBaseMax}
-            step={1000} // Adjust step for CLP, e.g., 100, 500, or 1000
+            step={1000}
             minValue={priceRange.min}
             maxValue={priceRange.max}
             onInput={(e) => {
               setPriceRange({ min: e.minValue, max: e.maxValue });
             }}
-            ruler={false} // Hides the default ruler
-            label={false} // Hides the default min/max labels on the slider
-            style={{ border: 'none', boxShadow: 'none', padding: '15px 0px' }} // Basic styling override
-            barLeftColor="#e5e7eb" // Tailwind gray-200
-            barRightColor="#e5e7eb" // Tailwind gray-200
-            barInnerColor="#3b82f6" // Tailwind blue-500
+            ruler={false}
+            label={false}
+            style={{ border: 'none', boxShadow: 'none', padding: '15px 0px' }}
+            barLeftColor="#e5e7eb"
+            barRightColor="#e5e7eb"
+            barInnerColor="#3b82f6"
             thumbLeftColor="#ffffff"
             thumbRightColor="#ffffff"
           />
@@ -186,10 +186,6 @@ function ActualProductGrid() {
           </select>
         </div>
         
-        {/* <label className="flex items-center gap-2 text-sm text-gray-600 pt-2">
-          <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500" />
-          Solo con descuento (Próximamente)
-        </label> */}
       </aside>
 
       {/* Grilla de productos a la derecha */}
