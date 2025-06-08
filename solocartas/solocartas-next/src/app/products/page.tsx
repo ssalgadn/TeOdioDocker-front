@@ -1,51 +1,13 @@
 import ProductGrid from '@/app/components/productPage/ProductGrid';
-import type { ProductListItem, ProductFilters } from '@/types/product';
+import { getProducts } from '@/lib/api'; // Importa desde el nuevo archivo
+import type { ProductFilters } from '@/types/product';
 
 interface ProductsPageProps {
-  params: { [key: string]: string | string[] | undefined };
+  params: {}; // params estará vacío para esta ruta, pero lo aceptamos
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> {
-  const queryParams = new URLSearchParams();
-
-  if (filters.name) queryParams.append('name', filters.name);
-  if (filters.min_price) queryParams.append('min_price', filters.min_price.toString());
-  if (filters.max_price) queryParams.append('max_price', filters.max_price.toString());
-  if (filters.game) queryParams.append('game', filters.game);
-  if (filters.product_type) queryParams.append('product_type', filters.product_type);
-  if (filters.skip) queryParams.append('skip', filters.skip.toString());
-  if (filters.limit) queryParams.append('limit', filters.limit.toString());
-
-  if (!process.env.BACKEND_URL) {
-    console.error("BACKEND_URL environment variable is not set.");
-    return [];
-  }
-
-  const response = await fetch(`${process.env.BACKEND_URL}/products/?${queryParams.toString()}`, {
-    cache: 'no-store',
-  });
-
-  if (!response.ok) {
-    console.error('Failed to fetch products:', await response.text());
-    return [];
-  }
-
-  return response.json();
-}
-
-export default async function ProductsPage(props: ProductsPageProps) {
-  const { searchParams } = props;
-
-  if (!process.env.BACKEND_URL) {
-    return (
-      <main className="container mx-auto px-6 py-10">
-        <h1 className="text-2xl font-bold text-red-600">Error de Configuración del Servidor</h1>
-        <p>La URL del backend no está configurada. Por favor, contacte al administrador.</p>
-      </main>
-    );
-  }
-
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const page = parseInt(searchParams.page as string) || 1;
   const limit = parseInt(searchParams.limit as string) || 12;
   const skip = (page - 1) * limit;
@@ -60,6 +22,7 @@ export default async function ProductsPage(props: ProductsPageProps) {
     limit: limit,
   };
 
+  // La llamada a la API ahora es más limpia. Si falla, error.tsx se activará.
   const products = await getProducts(filters);
 
   return (
