@@ -2,6 +2,7 @@ import ProductGrid from '@/app/components/productPage/ProductGrid';
 import type { ProductListItem, ProductFilters } from '@/types/product';
 
 interface ProductsPageProps {
+  params?: { [key: string]: string | string[] | undefined }; // Optional params
   searchParams: { [key: string]: string | string[] | undefined };
 }
 

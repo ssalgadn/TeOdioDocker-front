@@ -12,8 +12,9 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import { MessageCircle, Send, UserCircle } from 'lucide-react';
+import { MessageCircle, Send, UserCircle, Star } from 'lucide-react'; // Added Star for potential direct use if needed, though StarRating handles it
 import { useAuth } from '@/contexts/AuthContext';
+import StarRating from '@/app/components/shared/StarRating';
 
 ChartJS.register(
   CategoryScale,
@@ -165,9 +166,15 @@ export default function ProductDetail({ product }) {
                 </div>
               </div>
               <div className="flex items-center justify-between mt-3">
-                <div className="flex items-center">
-                  <span className="text-yellow-400">⭐</span>
-                  <span className="text-sm text-gray-600 ml-1">{priceEntry.store.rating ? `${priceEntry.store.rating}/5` : 'N/A'}</span>
+                <div className="flex flex-col items-start">
+                  <StarRating 
+                    initialRating={priceEntry.store.rating || 0} 
+                    onRatingChange={(newRating) => console.log(`New rating for ${priceEntry.store.name}: ${newRating}`)} 
+                    size={18} 
+                  />
+                  <span className="text-xs text-gray-500 mt-1">
+                    {priceEntry.store.rating ? `Promedio: ${Number(priceEntry.store.rating).toFixed(1)}/5` : 'Sin calificación aún'}
+                  </span>
                 </div>
                 <a
                   href={priceEntry.url}
