@@ -47,19 +47,19 @@ export default function Landing() {
           />
           <CategoryCard 
             title="Pokémon"
-            href="/products?category=pokemon"
+            href="/products?game=pokemon"
             description="Atrapa las mejores ofertas para cartas Pokémon."
             bgColorClass="bg-gradient-to-br from-yellow-400 to-orange-500"
           />
           <CategoryCard 
             title="Yu-Gi-Oh!"
-            href="/products?category=yu-gi-oh"
+            href="/products?game=yu-gi-oh"
             description="Encuentra cartas raras y poderosas de Yu-Gi-Oh!."
             bgColorClass="bg-gradient-to-br from-red-500 to-pink-600"
           />
           <CategoryCard 
             title="Magic: The Gathering"
-            href="/products?category=magic-the-gathering"
+            href="/products?game=magic-the-gathering"
             description="Descubre el multiverso de Magic: The Gathering."
             bgColorClass="bg-gradient-to-br from-teal-500 to-cyan-600"
           />
