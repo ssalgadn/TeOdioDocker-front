@@ -2,7 +2,7 @@ import ProductGrid from '@/app/components/productPage/ProductGrid';
 import type { ProductListItem, ProductFilters } from '@/types/product';
 
 interface ProductsPageProps {
-  params?: { [key: string]: string | string[] | undefined }; // Optional params
+  params?: { [key: string]: string | string[] | undefined }; // params es opcional
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
@@ -28,7 +28,8 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   return response.json();
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+// --- CAMBIO AQUÍ: Aceptamos 'params' y 'searchParams' para que coincida con la interfaz ---
+export default async function ProductsPage({ params, searchParams }: ProductsPageProps) {
   const page = parseInt(searchParams.page as string) || 1;
   const limit = parseInt(searchParams.limit as string) || 12;
   const skip = (page - 1) * limit;
