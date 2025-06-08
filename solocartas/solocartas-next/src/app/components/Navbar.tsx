@@ -21,27 +21,27 @@ const megaMenuColumns: DropdownItem[] = [
     name: 'Pokémon',
     href: '/products?game=pokemon',
     subItems: [
-      { name: 'Boosters', href: '/products?game=pokemon&type=boosters' },
-      { name: 'Bundles', href: '/products?game=pokemon&type=bundles' },
-      { name: 'Singles', href: '/products?game=pokemon&type=singles' },
+      { name: 'Boosters', href: '/products?game=pokemon&product_type=booster' },
+      { name: 'Bundles', href: '/products?game=pokemon&product_type=bundle' },
+      { name: 'Singles', href: '/products?game=pokemon&product_type=single' },
     ],
   },
   {
     name: 'Yu-Gi-Oh!',
     href: '/products?game=yu-gi-oh',
     subItems: [
-      { name: 'Boosters', href: '/products?game=yu-gi-oh&type=boosters' },
-      { name: 'Bundles', href: '/products?game=yu-gi-oh&type=bundles' },
-      { name: 'Singles', href: '/products?game=yu-gi-oh&type=singles' },
+      { name: 'Boosters', href: '/products?game=yu-gi-oh&product_type=booster' },
+      { name: 'Bundles', href: '/products?game=yu-gi-oh&product_type=bundle' },
+      { name: 'Singles', href: '/products?game=yu-gi-oh&product_type=single' },
     ],
   },
   {
     name: 'Magic: The Gathering',
     href: '/products?game=magic-the-gathering',
     subItems: [
-      { name: 'Boosters', href: '/products?game=magic-the-gathering&type=boosters' },
-      { name: 'Bundles', href: '/products?game=magic-the-gathering&type=bundles' },
-      { name: 'Singles', href: '/products?game=magic-the-gathering&type=singles' },
+      { name: 'Boosters', href: '/products?game=magic-the-gathering&product_type=booster' },
+      { name: 'Bundles', href: '/products?game=magic-the-gathering&product_type=bundle' },
+      { name: 'Singles', href: '/products?game=magic-the-gathering&product_type=single' },
     ],
   },
 ];
