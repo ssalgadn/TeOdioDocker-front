@@ -28,7 +28,7 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   return response.json();
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+export default async function ProductsPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
   const page = parseInt(searchParams.page as string) || 1;
   const limit = parseInt(searchParams.limit as string) || 12; // Default items per page
   const skip = (page - 1) * limit;
