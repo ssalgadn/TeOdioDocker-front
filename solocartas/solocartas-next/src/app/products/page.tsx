@@ -2,7 +2,7 @@ import ProductGrid from '@/app/components/productPage/ProductGrid';
 import type { ProductListItem, ProductFilters } from '@/types/product';
 
 interface ProductsPageProps {
-  params?: { [key: string]: string | string[] | undefined };
+  params: { [key: string]: string | string[] | undefined }; // Volvemos a 'params' ya que lo ignoraremos con un comentario
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
@@ -33,8 +33,8 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   return response.json();
 }
 
-// --- CAMBIO AQUÍ: Aceptamos 'params' y lo ignoramos con '_', para que coincida con la interfaz ---
-export default async function ProductsPage({ params: _, searchParams }: ProductsPageProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default async function ProductsPage({ params, searchParams }: ProductsPageProps) {
   try {
     if (typeof process.env.BACKEND_URL === 'undefined') {
       console.error("BACKEND_URL is not defined in ProductsPage. Please check your environment variables.");
