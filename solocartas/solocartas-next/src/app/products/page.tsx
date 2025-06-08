@@ -17,8 +17,8 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   if (filters.skip) queryParams.append('skip', filters.skip.toString());
   if (filters.limit) queryParams.append('limit', filters.limit.toString());
 
-  if (typeof process.env.BACKEND_URL === 'undefined') {
-    console.error("BACKEND_URL is not defined in getProducts. Please check your environment variables.");
+  if (!process.env.BACKEND_URL) {
+    console.error("BACKEND_URL environment variable is not set.");
     return [];
   }
 
@@ -30,64 +30,45 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
     console.error('Failed to fetch products:', await response.text());
     return [];
   }
+
   return response.json();
 }
 
 export default async function ProductsPage(props: ProductsPageProps) {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { params, searchParams } = props;
+  const { searchParams } = props;
 
-    if (typeof process.env.BACKEND_URL === 'undefined') {
-      console.error("BACKEND_URL is not defined in ProductsPage. Please check your environment variables.");
-      return (
-        <main className="container mx-auto px-6 py-10">
-          <h1 className="text-2xl font-bold text-red-600">Error de Configuración del Servidor</h1>
-          <p>La URL del backend no está configurada. Por favor, contacte al administrador.</p>
-        </main>
-      );
-    }
-
-    const page = parseInt(searchParams.page as string) || 1;
-    const limit = parseInt(searchParams.limit as string) || 12;
-    const skip = (page - 1) * limit;
-
-    const filters: ProductFilters = {
-      name: searchParams.name as string | undefined,
-      min_price: searchParams.min_price ? parseFloat(searchParams.min_price as string) : undefined,
-      max_price: searchParams.max_price ? parseFloat(searchParams.max_price as string) : undefined,
-      game: searchParams.game as string | undefined,
-      product_type: searchParams.product_type as string | undefined,
-      skip: skip,
-      limit: limit,
-    };
-
-    const products = await getProducts(filters);
-
+  if (!process.env.BACKEND_URL) {
     return (
       <main className="container mx-auto px-6 py-10">
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">Catálogo de cartas</h1>
-        <p className="text-gray-700 mb-6">
-          Compara precios de cartas TCG en distintas tiendas chilenas verificadas.
-        </p>
-        <ProductGrid initialProducts={products} />
-      </main>
-    );
-  } catch (error) {
-    console.error("Error rendering ProductsPage:", error);
-    const errorMessage = error instanceof Error ? error.message : "Un error desconocido ocurrió";
-    const errorStack = error instanceof Error ? error.stack : undefined;
-
-    return (
-      <main className="container mx-auto px-6 py-10">
-        <h1 className="text-2xl font-bold text-red-600">Error al Cargar la Página</h1>
-        <p>Ocurrió un error inesperado: {errorMessage}. Por favor, intente más tarde.</p>
-        {process.env.NODE_ENV === 'development' && errorStack && (
-          <pre className="mt-4 p-4 bg-red-100 text-red-700 rounded text-xs whitespace-pre-wrap">
-            {errorStack}
-          </pre>
-        )}
+        <h1 className="text-2xl font-bold text-red-600">Error de Configuración del Servidor</h1>
+        <p>La URL del backend no está configurada. Por favor, contacte al administrador.</p>
       </main>
     );
   }
+
+  const page = parseInt(searchParams.page as string) || 1;
+  const limit = parseInt(searchParams.limit as string) || 12;
+  const skip = (page - 1) * limit;
+
+  const filters: ProductFilters = {
+    name: searchParams.name as string | undefined,
+    min_price: searchParams.min_price ? parseFloat(searchParams.min_price as string) : undefined,
+    max_price: searchParams.max_price ? parseFloat(searchParams.max_price as string) : undefined,
+    game: searchParams.game as string | undefined,
+    product_type: searchParams.product_type as string | undefined,
+    skip: skip,
+    limit: limit,
+  };
+
+  const products = await getProducts(filters);
+
+  return (
+    <main className="container mx-auto px-6 py-10">
+      <h1 className="text-3xl font-bold text-blue-600 mb-4">Catálogo de cartas</h1>
+      <p className="text-gray-700 mb-6">
+        Compara precios de cartas TCG en distintas tiendas chilenas verificadas.
+      </p>
+      <ProductGrid initialProducts={products} />
+    </main>
+  );
 }
