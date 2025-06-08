@@ -1,9 +1,6 @@
 import ProductGrid from '@/app/components/productPage/ProductGrid';
 import type { ProductListItem, ProductFilters } from '@/types/product';
 
-interface ProductsPageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
-}
 
 async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> {
   const queryParams = new URLSearchParams();
