@@ -1,6 +1,9 @@
 import ProductGrid from '@/app/components/productPage/ProductGrid';
 import type { ProductListItem, ProductFilters } from '@/types/product';
 
+interface ProductsPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
 async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> {
   const queryParams = new URLSearchParams();
@@ -14,20 +17,19 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   if (filters.limit) queryParams.append('limit', filters.limit.toString());
 
   const response = await fetch(`${process.env.BACKEND_URL}/products/?${queryParams.toString()}`, {
-    cache: 'no-store', // Or configure caching as needed
+    cache: 'no-store',
   });
 
   if (!response.ok) {
-    // Handle error appropriately
     console.error('Failed to fetch products:', await response.text());
     return [];
   }
   return response.json();
 }
 
-export default async function ProductsPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const page = parseInt(searchParams.page as string) || 1;
-  const limit = parseInt(searchParams.limit as string) || 12; // Default items per page
+  const limit = parseInt(searchParams.limit as string) || 12;
   const skip = (page - 1) * limit;
 
   const filters: ProductFilters = {
@@ -41,9 +43,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { [
   };
 
   const products = await getProducts(filters);
-  // TODO: Get total number of products from API if available for pagination
-  // const totalProducts = ...;
-  // const totalPages = Math.ceil(totalProducts / limit);
 
   return (
     <main className="container mx-auto px-6 py-10">
@@ -51,8 +50,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { [
       <p className="text-gray-700 mb-6">
         Compara precios de cartas TCG en distintas tiendas chilenas verificadas.
       </p>
-      {/* Pass products and pagination info to ProductGrid */}
-      {/* For now, ProductGrid will need significant refactoring to accept these props */}
       <ProductGrid initialProducts={products} />
     </main>
   );
