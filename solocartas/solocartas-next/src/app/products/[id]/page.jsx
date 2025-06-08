@@ -2,7 +2,7 @@ import ProductDetail from '@/app/components/productPage/ProductDetail';
 import { notFound } from 'next/navigation';
 
 async function getProduct(id) {
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const backendUrl = process.env.BACKEND_URL;
   if (!backendUrl) {
     throw new Error('Backend URL is not configured');
   }

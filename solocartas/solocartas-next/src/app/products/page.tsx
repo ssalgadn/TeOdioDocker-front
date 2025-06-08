@@ -13,7 +13,7 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   if (filters.skip) queryParams.append('skip', filters.skip.toString());
   if (filters.limit) queryParams.append('limit', filters.limit.toString());
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/?${queryParams.toString()}`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/products/?${queryParams.toString()}`, {
     cache: 'no-store', // Or configure caching as needed
   });
 
