@@ -1,10 +1,6 @@
 import ProductGrid from '@/app/components/productPage/ProductGrid';
 import type { ProductListItem, ProductFilters } from '@/types/product';
-
-interface ProductsPageProps {
-  params: { [key: string]: string | string[] | undefined };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
+import { Suspense } from 'react';
 
 async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> {
   const queryParams = new URLSearchParams();
@@ -34,7 +30,14 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   return response.json();
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+// En lugar de una interfaz separada, definimos los tipos directamente aquí
+// y usamos un comentario para desactivar el error de 'params' no usado.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default async function ProductsPage({ params, searchParams }: {
+  params: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+
   const page = parseInt(searchParams.page as string) || 1;
   const limit = parseInt(searchParams.limit as string) || 12;
   const skip = (page - 1) * limit;
@@ -57,7 +60,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <p className="text-gray-700 mb-6">
         Compara precios de cartas TCG en distintas tiendas chilenas verificadas.
       </p>
-      <ProductGrid initialProducts={products} />
+      {/* Es una buena práctica envolver en Suspense por si el componente hijo usa hooks como useSearchParams */}
+      <Suspense fallback={<div>Cargando productos...</div>}>
+        <ProductGrid initialProducts={products} />
+      </Suspense>
     </main>
   );
 }
