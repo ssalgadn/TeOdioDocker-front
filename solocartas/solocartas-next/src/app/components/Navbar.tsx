@@ -1,12 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+
+
 import { UserCircle2, ChevronDown, Sun, Moon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
-// ... (La interfaz DropdownItem y el array megaMenuColumns no cambian)
 interface DropdownItem {
   name: string;
   href?: string;
@@ -54,6 +57,8 @@ export default function Navbar() {
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const catalogCloseTimer = useRef<NodeJS.Timeout | null>(null);
 
+  const { isAuthenticated, user, logout, isLoading } = useAuth();
+
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
@@ -69,10 +74,10 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
-    console.log('Logout clicked');
+    logout();
     setIsUserDropdownOpen(false);
   };
-  
+
   const handleCatalogEnter = () => {
     if (catalogCloseTimer.current) {
       clearTimeout(catalogCloseTimer.current);
@@ -83,11 +88,10 @@ export default function Navbar() {
   const handleCatalogLeave = () => {
     catalogCloseTimer.current = setTimeout(() => {
       setCatalogOpen(false);
-    }, 200); // Pequeño delay para permitir que el mouse se mueva al menú
+    }, 200);
   };
 
   return (
-    // La NAV ahora es el contenedor principal para la lógica de hover
     <div className="relative" onMouseLeave={handleCatalogLeave}>
       <nav className="bg-white dark:bg-gray-900 shadow sticky top-0 z-50">
         <div className="container mx-auto px-6 py-3 flex justify-between items-center">
@@ -111,7 +115,7 @@ export default function Navbar() {
                 About Us
               </Link>
               
-              {/* --- CAMBIO AQUÍ: Se reemplazó el <div> por <Link> --- */}
+
               <Link
                 href="/products"
                 onMouseEnter={handleCatalogEnter}
@@ -134,30 +138,45 @@ export default function Navbar() {
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </button>
             )}
+
             <div className="relative" ref={userDropdownRef}>
-              <button onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)} className="flex items-center">
-                <UserCircle2 size={36} className="text-gray-500 dark:text-gray-400" strokeWidth={1.5} />
-                <ChevronDown className={`h-5 w-5 ml-1 text-gray-600 dark:text-gray-400 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {isUserDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-50">
-                  <Link href="/login" onClick={() => setIsUserDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Login</Link>
-                  <Link href="/register" onClick={() => setIsUserDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Register</Link>
-                  <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</button>
-                </div>
+              {isLoading ? (
+                <div className="w-8 h-8 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse"></div>
+              ) : (
+                <>
+                  <button onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)} className="flex items-center">
+                    {isAuthenticated && user?.picture ? (
+                      <Image src={user.picture} alt={user.name || 'Avatar'} width={36} height={36} className="rounded-full" />
+                    ) : (
+                      <UserCircle2 size={36} className="text-gray-500 dark:text-gray-400" strokeWidth={1.5} />
+                    )}
+                    <ChevronDown className={`h-5 w-5 ml-1 text-gray-600 dark:text-gray-400 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {isUserDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-50">
+                      {isAuthenticated ? (
+                        <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                          Logout
+                        </button>
+                      ) : (
+                        <>
+                          <Link href="/login" onClick={() => setIsUserDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Login</Link>
+                          <Link href="/register" onClick={() => setIsUserDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Register</Link>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mega Menu está AHORA FUERA de la NAV pero dentro del wrapper con la lógica de hover */}
       <div
-        onMouseEnter={handleCatalogEnter} // Mantener abierto si el mouse entra al menú
-        className={`absolute top-full left-0 right-0 // Posicionamiento full-width
-                   bg-gray-700 dark:bg-gray-800 shadow-lg z-40
-                   transition-opacity duration-300
-                   ${isCatalogOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        onMouseEnter={handleCatalogEnter}
+        className={`absolute top-full left-0 right-0 bg-gray-700 dark:bg-gray-800 shadow-lg z-40 transition-opacity duration-300 ${isCatalogOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
         <div className="container mx-auto px-6 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-10">
