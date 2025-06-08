@@ -3,28 +3,31 @@
 import Link from 'next/link';
 import { useState, FormEvent } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  
-  const { login, isLoading } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
+
     try {
-      // Simplemente llamamos a la función 'login' del contexto.
-      // ¡Ya está corregida con el parámetro 'audience'!
       await login(email, password);
+      router.push('/');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Error al iniciar sesión. Por favor, inténtalo de nuevo.');
     }
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
@@ -42,8 +45,8 @@ export default function LoginPage() {
               <input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required
                 className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10"
                 placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button type="button" onClick={()=>setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700">
-                {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700">
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
           </div>

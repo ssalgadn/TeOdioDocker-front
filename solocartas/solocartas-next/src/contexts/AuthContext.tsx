@@ -32,13 +32,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const parseJwt = (token: string): User | null => {
     try {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
       return JSON.parse(jsonPayload);
@@ -58,78 +59,77 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsAuthenticated(true);
       }
     }
-    setIsLoading(false);
+    setTimeout(() => setIsLoading(false), 0);
   }, []);
 
-  // --- Función de Login (ACTUALIZADA CON 'audience') ---
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+      const res = await fetch('http://localhost:8000/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          grant_type: 'password',
-          username: email,
-          password: password,
-          client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-          scope: 'openid profile email offline_access',
-          // --- ¡CAMBIO CRUCIAL AQUÍ! ---
-          // Se añade el parámetro 'audience' para especificar a qué API queremos acceder.
-          audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
-        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error_description || 'Credenciales incorrectas.');
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail?.error_description || 'Error al iniciar sesión');
       }
 
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('id_token', data.id_token);
-      
-      const userData = parseJwt(data.id_token);
-      setUser(userData);
-      setIsAuthenticated(true);
 
-      router.push('/profile');
-    } catch (error: any) {
-        throw error; // Relanzamos el error para que la página lo pueda capturar
+      router.push('/');
+
+    } catch (err: any) {
+      setError(err.message);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
-  // --- Función de Signup (no cambia, pero ahora llamará a la función de login corregida) ---
   const signup = async (email: string, password: string, username: string) => {
     setIsLoading(true);
     try {
-      const signupResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/dbconnections/signup`, {
+      const response = await fetch(`http://localhost:8000/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-          email,
-          password,
-          connection: 'Username-Password-Authentication',
-          user_metadata: { username }
-        }),
+        body: JSON.stringify({ email, password, username }),
       });
 
-      if (!signupResponse.ok) {
-        const errorData = await signupResponse.json();
-        throw new Error(errorData.description || 'No se pudo crear la cuenta.');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'No se pudo registrar el usuario.');
       }
 
-      await login(email, password); // Llama a la nueva función de login con 'audience'
-    } catch(error: any) {
-        throw error; // Relanzamos el error
+      // Si el registro fue exitoso, intenta login con las mismas credenciales
+      await login(email, password);
+
+    } catch (error: any) {
+      throw error;
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const logout = () => { /* ... (sin cambios) ... */ };
+
+  const logout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
+
+    setUser(null);
+    setIsAuthenticated(false);
+
+    const domain = process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL;
+    const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
+    const returnTo = window.location.origin; // o 'http://localhost:3000' directamente
+
+    window.location.href = `${domain}/v2/logout?client_id=${clientId}&returnTo=${encodeURIComponent(returnTo)}`;
+  };
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, isLoading, login, signup, logout }}>

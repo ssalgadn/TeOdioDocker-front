@@ -77,7 +77,7 @@ export default function Navbar() {
     logout();
     setIsUserDropdownOpen(false);
   };
-  
+
   const handleCatalogEnter = () => {
     if (catalogCloseTimer.current) {
       clearTimeout(catalogCloseTimer.current);
@@ -129,7 +129,7 @@ export default function Navbar() {
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </button>
             )}
-            
+
             {/* --- 4. Lógica de renderizado condicional para el perfil --- */}
             <div className="relative" ref={userDropdownRef}>
               {isLoading ? (
@@ -140,13 +140,13 @@ export default function Navbar() {
                   <button onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)} className="flex items-center">
                     {/* Muestra la imagen del usuario si está logueado, si no, un ícono genérico */}
                     {isAuthenticated && user?.picture ? (
-                       <img src={user.picture} alt={user.name || 'Avatar'} className="w-9 h-9 rounded-full" />
+                      <img src={user.picture} alt={user.name || 'Avatar'} className="w-9 h-9 rounded-full" />
                     ) : (
-                       <UserCircle2 size={36} className="text-gray-500 dark:text-gray-400" strokeWidth={1.5} />
+                      <UserCircle2 size={36} className="text-gray-500 dark:text-gray-400" strokeWidth={1.5} />
                     )}
                     <ChevronDown className={`h-5 w-5 ml-1 text-gray-600 dark:text-gray-400 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
-                  
+
                   {isUserDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-50">
                       {isAuthenticated ? (
