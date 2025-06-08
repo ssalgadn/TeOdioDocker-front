@@ -35,6 +35,7 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
 
 export default async function ProductsPage(props: ProductsPageProps) {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { params, searchParams } = props;
 
     if (typeof process.env.BACKEND_URL === 'undefined') {
