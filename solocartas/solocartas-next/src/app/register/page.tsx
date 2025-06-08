@@ -48,8 +48,12 @@ export default function RegisterPage() {
 
     try {
       await signup(email, password, username);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Ocurrió un error inesperado durante el registro.');
+      }
     }
   };
 

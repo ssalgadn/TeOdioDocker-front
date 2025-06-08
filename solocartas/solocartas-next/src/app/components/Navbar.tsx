@@ -1,6 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+
+
 import { UserCircle2, ChevronDown, Sun, Moon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
@@ -134,7 +137,7 @@ export default function Navbar() {
                 <>
                   <button onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)} className="flex items-center">
                     {isAuthenticated && user?.picture ? (
-                      <img src={user.picture} alt={user.name || 'Avatar'} className="w-9 h-9 rounded-full" />
+                      <Image src={user.picture} alt={user.name || 'Avatar'} width={36} height={36} className="rounded-full" />
                     ) : (
                       <UserCircle2 size={36} className="text-gray-500 dark:text-gray-400" strokeWidth={1.5} />
                     )}

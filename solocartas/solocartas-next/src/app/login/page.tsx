@@ -23,8 +23,12 @@ export default function LoginPage() {
     try {
       await login(email, password);
       router.push('/');
-    } catch (err: any) {
-      setError(err.message || 'Error al iniciar sesión. Por favor, inténtalo de nuevo.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Error al iniciar sesión. Por favor, inténtalo de nuevo.');
+      } else {
+        setError('Ocurrió un error inesperado. Por favor, inténtalo de nuevo.');
+      }
     }
   };
 
