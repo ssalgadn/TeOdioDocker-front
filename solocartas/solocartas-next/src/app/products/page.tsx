@@ -33,7 +33,8 @@ async function getProducts(filters: ProductFilters): Promise<ProductListItem[]> 
   return response.json();
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+// --- CAMBIO AQUÍ: Aceptamos 'params' y lo ignoramos con '_', para que coincida con la interfaz ---
+export default async function ProductsPage({ params: _, searchParams }: ProductsPageProps) {
   try {
     if (typeof process.env.BACKEND_URL === 'undefined') {
       console.error("BACKEND_URL is not defined in ProductsPage. Please check your environment variables.");
