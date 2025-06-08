@@ -3,7 +3,6 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
-// --- Interfaces de Tipos para TypeScript ---
 interface User {
   name?: string;
   picture?: string;
@@ -24,10 +23,8 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// 1. Crear el Contexto
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// 2. Crear el Proveedor del Contexto
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -65,7 +62,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/auth/login', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,6 +79,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('id_token', data.id_token);
 
+      // Actualizar el estado inmediatamente después de guardar los tokens
+      const userData = parseJwt(data.id_token);
+      if (userData) {
+        setUser(userData);
+        setIsAuthenticated(true);
+      }
+      setError(null); // Limpiar errores previos si el login es exitoso
+
       router.push('/');
 
     } catch (err: any) {
@@ -94,7 +99,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signup = async (email: string, password: string, username: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/auth/register`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, username }),
@@ -138,7 +143,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   );
 };
 
-// --- Custom hook para usar el contexto ---
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {

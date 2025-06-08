@@ -44,28 +44,24 @@ export default function Landing() {
             href="/products"
             description="Explora nuestro catálogo completo de cartas."
             bgColorClass="bg-gradient-to-br from-purple-500 to-indigo-600"
-            // imageSrc="/images/all-cards.jpg" // Placeholder image path
           />
           <CategoryCard 
             title="Pokémon"
             href="/products?category=pokemon"
             description="Atrapa las mejores ofertas para cartas Pokémon."
             bgColorClass="bg-gradient-to-br from-yellow-400 to-orange-500"
-            // imageSrc="/images/pokemon-category.jpg" // Placeholder image path
           />
           <CategoryCard 
             title="Yu-Gi-Oh!"
             href="/products?category=yu-gi-oh"
             description="Encuentra cartas raras y poderosas de Yu-Gi-Oh!."
             bgColorClass="bg-gradient-to-br from-red-500 to-pink-600"
-            // imageSrc="/images/yugioh-category.jpg" // Placeholder image path
           />
           <CategoryCard 
             title="Magic: The Gathering"
             href="/products?category=magic-the-gathering"
             description="Descubre el multiverso de Magic: The Gathering."
             bgColorClass="bg-gradient-to-br from-teal-500 to-cyan-600"
-            // imageSrc="/images/mtg-category.jpg" // Placeholder image path
           />
         </div>
       </section>
