@@ -107,6 +107,15 @@ export default function Navbar() {
               >
                 Inicio
               </Link>
+
+              <Link
+                href="/about-us"
+                className={`font-medium ${pathname === '/about-us' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'} hover:text-blue-600 dark:hover:text-blue-400 transition-colors`}
+              >
+                About Us
+              </Link>
+              
+
               <Link
                 href="/products"
                 onMouseEnter={handleCatalogEnter}
