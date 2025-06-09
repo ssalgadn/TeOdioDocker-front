@@ -26,18 +26,18 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ title, href, imageSrc, bgCo
 
 export default function Landing() {
   return (
-    <main className="container mx-auto px-4 sm:px-6 py-10">
+    <main className="container mx-auto px-4 sm:px-6 py-10 dark:bg-slate-800">
       <header className="text-center mb-12">
-        <h1 className="text-5xl font-extrabold text-blue-700 sm:text-6xl">
+        <h1 className="text-5xl font-extrabold text-blue-700 dark:text-blue-500 sm:text-6xl">
           Bienvenido a SoloCartas
         </h1>
-        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Tu central para comparar precios de Trading Card Games en Chile. Encuentra las mejores ofertas para Pokémon, Yu-Gi-Oh!, Magic y más.
         </p>
       </header>
 
       <section className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-10">Explora Nuestras Categorías</h2>
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center mb-10">Explora Nuestras Categorías</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <CategoryCard 
             title="Ver Todo"
@@ -66,9 +66,9 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-gray-50 py-12 rounded-lg shadow-md">
+      <section className="bg-gray-50 dark:bg-slate-700 py-12 rounded-lg shadow-md">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">¿Por Qué SoloCartas?</h2>
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">¿Por Qué SoloCartas?</h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-blue-600 mb-2">
@@ -76,8 +76,8 @@ export default function Landing() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-1">Ahorra Tiempo y Dinero</h3>
-              <p className="text-gray-600 text-sm">Compara precios de múltiples tiendas en un solo lugar. No más búsquedas interminables.</p>
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-1">Ahorra Tiempo y Dinero</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Compara precios de múltiples tiendas en un solo lugar. No más búsquedas interminables.</p>
             </div>
             <div>
               <div className="text-blue-600 mb-2">
@@ -85,8 +85,8 @@ export default function Landing() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-1">Tiendas Verificadas</h3>
-              <p className="text-gray-600 text-sm">Solo trabajamos con tiendas confiables para asegurar una buena experiencia de compra.</p>
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-1">Tiendas Verificadas</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Solo trabajamos con tiendas confiables para asegurar una buena experiencia de compra.</p>
             </div>
             <div>
               <div className="text-blue-600 mb-2">
@@ -94,8 +94,8 @@ export default function Landing() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-1">Comunidad Activa</h3>
-              <p className="text-gray-600 text-sm">(Próximamente) Opiniones, listas de deseos y alertas de precios para tus cartas favoritas.</p>
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-1">Comunidad Activa</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">(Próximamente) Opiniones, listas de deseos y alertas de precios para tus cartas favoritas.</p>
             </div>
           </div>
         </div>

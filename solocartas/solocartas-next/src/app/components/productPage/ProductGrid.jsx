@@ -86,25 +86,25 @@ function ActualProductGrid({ initialProducts }) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 dark:bg-gray-900">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 items-start">
         {/* Filter Section */}
-        <div className="md:col-span-1 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Filtros</h2>
+        <div className="md:col-span-1 p-6 bg-white dark:bg-slate-800 rounded-lg shadow-lg mb-8 md:mb-0">
+          <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">Filtros</h2>
           <div className="space-y-4">
             <div>
-              <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">Buscar por nombre</label>
+              <label htmlFor="search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Buscar por nombre</label>
               <input
                 type="text"
                 id="search"
                 placeholder="Ej: Charizard VMAX"
-                className="border border-gray-300 px-3 py-2 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 px-3 py-2 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)} 
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Rango de Precio</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rango de Precio</label>
               <MultiRangeSlider
                 min={sliderBaseMin}
                 max={sliderBaseMax}
@@ -123,16 +123,16 @@ function ActualProductGrid({ initialProducts }) {
                 thumbLeftColor="#ffffff"
                 thumbRightColor="#ffffff"
               />
-              <div className="mt-2 text-xs text-gray-600 flex justify-between">
+              <div className="mt-2 text-xs text-gray-600 dark:text-gray-400 flex justify-between">
                 <span>${priceRange.min?.toLocaleString('es-CL')}</span>
                 <span>${priceRange.max?.toLocaleString('es-CL')}</span>
               </div>
             </div>
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoría</label>
               <select 
                 id="category"
-                className="border border-gray-300 px-3 py-2 rounded-md w-full focus:ring-blue-500 focus:border-blue-500 bg-white"
+                className="border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-gray-200 px-3 py-2 rounded-md w-full focus:ring-blue-500 focus:border-blue-500 bg-white dark:focus:bg-slate-600"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)} 
               >
@@ -141,10 +141,10 @@ function ActualProductGrid({ initialProducts }) {
               </select>
             </div>
             <div>
-              <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+              <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo</label>
               <select 
                 id="type"
-                className="border border-gray-300 px-3 py-2 rounded-md w-full focus:ring-blue-500 focus:border-blue-500 bg-white"
+                className="border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-gray-200 px-3 py-2 rounded-md w-full focus:ring-blue-500 focus:border-blue-500 bg-white dark:focus:bg-slate-600"
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)} 
               >
@@ -164,14 +164,14 @@ function ActualProductGrid({ initialProducts }) {
         {/* Product Listing Section */}
         <div className="md:col-span-3">
           <div className="flex justify-between items-center mb-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Mostrando {totalProductsOnPage > 0 ? ((currentPage - 1) * itemsPerPage) + 1 : 0} - {((currentPage - 1) * itemsPerPage) + totalProductsOnPage} de {totalProductsOnPage} resultados en esta página
             </p>
             <div>
-              <label htmlFor="itemsPerPage" className="text-sm font-medium text-gray-700 mr-2">Items por página:</label>
+              <label htmlFor="itemsPerPage" className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Items por página:</label>
               <select 
                 id="itemsPerPage"
-                className="border border-gray-300 px-2 py-1.5 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+                className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 px-2 py-1.5 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white text-sm dark:focus:bg-gray-600"
                 value={itemsPerPage}
                 onChange={(e) => { 
                   const newLimit = parseInt(e.target.value);
@@ -191,7 +191,7 @@ function ActualProductGrid({ initialProducts }) {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 col-span-full text-center py-10">No se encontraron cartas con esos criterios.</p>
+            <p className="text-gray-500 dark:text-gray-400 col-span-full text-center py-10">No se encontraron cartas con esos criterios.</p>
           )}
 
           {(initialProducts.length >= itemsPerPage || currentPage > 1) && (
@@ -217,7 +217,8 @@ function ActualProductGrid({ initialProducts }) {
                   updateFiltersInUrl({ page: newPage });
                 }}
                 disabled={initialProducts.length < itemsPerPage}
-                className="px-4 py-2 bg-white border border-gray-300 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className={`px-4 py-2 border dark:border-gray-600 rounded-md text-sm font-medium transition-colors
+                ${!initialProducts || initialProducts.length < itemsPerPage ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200'}`}
               >
                 Siguiente
               </button>
