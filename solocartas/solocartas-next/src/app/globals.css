@@ -17,3 +17,7 @@ body {
   color: rgb(var(--foreground));
   font-family: Arial, Helvetica, sans-serif;
 }
+h1, h2, h3, h4, h5, h6, p, a, img {
+  user-select: none;
+  cursor: default;
+}
