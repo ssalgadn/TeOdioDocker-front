@@ -27,18 +27,22 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ title, href, imageSrc, bgCo
 export default function Landing() {
   return (
     <main className="container mx-auto px-4 sm:px-6 py-10 dark:bg-slate-800">
-      <header className="text-center mb-12">
-        <h1 className="text-5xl font-extrabold text-blue-700 dark:text-blue-500 sm:text-6xl">
-          Bienvenido a SoloCartas
-        </h1>
-        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+  <header className="text-center mb-12">
+    <h1
+      className="text-5xl font-extrabold text-blue-700 dark:text-blue-500 sm:text-6xl select-none outline-none"
+      tabIndex={-1}
+      contentEditable={false}
+    >
+      Bienvenido a SoloCartas
+    </h1>
+        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto select-none outline-none">
           Tu central para comparar precios de Trading Card Games en Chile. Encuentra las mejores ofertas para Pokémon, Yu-Gi-Oh!, Magic y más.
         </p>
       </header>
 
       <section className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center mb-10">Explora Nuestras Categorías</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center mb-10 select-none outline-none">Explora Nuestras Categorías</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 select-none outline-none">
           <CategoryCard 
             title="Ver Todo"
             href="/products"
@@ -66,7 +70,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-gray-50 dark:bg-slate-700 py-12 rounded-lg shadow-md">
+      <section className="bg-gray-50 dark:bg-slate-700 py-12 rounded-lg shadow-md select-none outline-none">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">¿Por Qué SoloCartas?</h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
