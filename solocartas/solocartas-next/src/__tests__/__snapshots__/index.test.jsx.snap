@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CardProduct component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="border dark:border-gray-700 rounded-lg overflow-hidden shadow hover:shadow-lg transition bg-white dark:bg-slate-800 cursor-pointer"
+  >
+    <img
+      alt="Carta Charizard VMAX"
+      class="w-full h-[320px] object-cover bg-gray-100 dark:bg-slate-700"
+      src="/charizard.png"
+    />
+    <div
+      class="p-3 flex flex-col items-start"
+    >
+      <h2
+        class="text-base font-semibold mb-1 dark:text-gray-100"
+      >
+        Charizard VMAX
+      </h2>
+      <p
+        class="text-green-600 font-medium mb-1"
+      >
+        $15.000
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
