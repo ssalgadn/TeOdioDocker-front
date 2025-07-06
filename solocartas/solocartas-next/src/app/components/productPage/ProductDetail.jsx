@@ -12,8 +12,8 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import { MessageCircle, Send, UserCircle, Star } from 'lucide-react'; // Added Star for potential direct use if needed, though StarRating handles it
-import { useState, useMemo } from 'react';
+import { MessageCircle, Send, UserCircle, Star } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { useAuth } from '@/contexts/AuthContext';
 import StarRating from '@/app/components/shared/StarRating';
@@ -29,8 +29,52 @@ ChartJS.register(
 );
 
 export default function ProductDetail({ product }) {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+
   const [showPriceHistoryModal, setShowPriceHistoryModal] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState('');
+  const [ratings, setRatings] = useState({});
   const { isAuthenticated, user } = useAuth();
+
+  // Fetch comments
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL}/comments/${product.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setComments(data);
+        }
+      } catch (e) {
+        console.error('Error fetching comments', e);
+      }
+    };
+    fetchComments();
+  }, [BACKEND_URL, product.id]);
+
+  // Fetch ratings for stores
+  useEffect(() => {
+    const fetchRatings = async () => {
+      if (!product.prices) return;
+      const entries = await Promise.all(
+        product.prices.map(async (p) => {
+          try {
+            const res = await fetch(`${BACKEND_URL}/reviews/${p.store.id}`);
+            if (!res.ok) return [p.store.id, null];
+            const data = await res.json();
+            if (Array.isArray(data) && data.length)
+              return [p.store.id, data.reduce((acc, cur) => acc + cur.rating, 0) / data.length];
+            return [p.store.id, null];
+          } catch (e) {
+            return [p.store.id, null];
+          }
+        })
+      );
+      setRatings(Object.fromEntries(entries));
+    };
+    fetchRatings();
+  }, [BACKEND_URL, product.prices]);
   const { theme } = useTheme();
 
   // Mock price history data if not available
@@ -125,7 +169,7 @@ export default function ProductDetail({ product }) {
           <img
             src={product.img_url}
             alt={product.name}
-            className="w-full h-auto rounded-lg shadow"
+            className="w-full max-w-md max-h-96 object-contain mx-auto rounded-lg shadow"
           />
           {priceHistory && priceHistory.length > 0 && (
             <button
@@ -245,16 +289,37 @@ export default function ProductDetail({ product }) {
               <div className="flex items-center justify-between mt-3">
                 <div className="flex flex-col items-start">
                   <StarRating 
-                    initialRating={priceEntry.store.rating || 0} 
-                    onRatingChange={(newRating) => console.log(`New rating for ${priceEntry.store.name}: ${newRating}`)} 
+                    initialRating={ratings[priceEntry.store.id] || 0} 
+                    readonly={!isAuthenticated}
+                    onRatingChange={async (newRating) => {
+                      if (!isAuthenticated) return;
+                      try {
+                        await fetch(`${BACKEND_URL}/reviews/`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            user: user?.email || 'Anon',
+                            store_id: priceEntry.store.id,
+                            rating: newRating,
+                          }),
+                        });
+                        setRatings((prev) => {
+                          const current = prev[priceEntry.store.id] || 0;
+                          const updated = current ? (current + newRating) / 2 : newRating;
+                          return { ...prev, [priceEntry.store.id]: updated };
+                        });
+                      } catch (e) {
+                        console.error('Error posting rating', e);
+                      }
+                    }} 
                     size={18} 
                   />
                   <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    {priceEntry.store.rating ? `Promedio: ${Number(priceEntry.store.rating).toFixed(1)}/5` : 'Sin calificación aún'}
+                    {ratings[priceEntry.store.id] ? `Promedio: ${ratings[priceEntry.store.id].toFixed(1)}/5` : 'Sin calificación aún'}
                   </span>
                 </div>
                 <a
-                  href={priceEntry.url}
+                  href={(priceEntry.store.website_url || priceEntry.url).startsWith('http') ? (priceEntry.store.website_url || priceEntry.url) : `https://${priceEntry.store.website_url || priceEntry.url}` }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 text-sm font-medium"
@@ -276,11 +341,34 @@ export default function ProductDetail({ product }) {
           <textarea 
             className={`w-full p-3 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out ${!isAuthenticated ? 'bg-gray-100 cursor-not-allowed' : ''}`} 
             rows="4" 
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
             placeholder={isAuthenticated ? "Escribe tu opinión sobre este producto..." : "Debes iniciar sesión para comentar"}
             disabled={!isAuthenticated}
           ></textarea>
           <button 
             type="button" 
+            onClick={async () => {
+              if (!commentText.trim()) return;
+              try {
+                const res = await fetch(`${BACKEND_URL}/comments/`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    user: user?.email || 'Anon',
+                    product_id: product.id,
+                    text: commentText.trim(),
+                  }),
+                });
+                if (res.ok) {
+                  const saved = await res.json();
+                  setComments((prev) => [...prev, saved]);
+                  setCommentText('');
+                }
+              } catch (e) {
+                console.error('Error posting comment', e);
+              }
+            }}
             className={`mt-4 px-6 py-2 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out flex items-center ${isAuthenticated ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
             disabled={!isAuthenticated}
           >
@@ -291,9 +379,8 @@ export default function ProductDetail({ product }) {
 
         {/* List of Comments */}
         <div className="space-y-6">
-          {product.comments && product.comments.length > 0 ? (
-            product.comments.map((comment, index) => (
-              <div key={comment.id || index} className="bg-gray-50 dark:bg-slate-700 p-4 rounded-lg mb-4">
+          {comments && comments.length > 0 ? (
+            comments.map((comment, index) => (              <div key={comment.id || index} className="bg-gray-50 dark:bg-slate-700 p-4 rounded-lg mb-4">
                 <div className="flex items-center mb-3">
                   <UserCircle size={32} className="mr-3 text-gray-400" />
                   <div>

@@ -1,0 +1,257 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar snapshot matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="relative"
+  >
+    <nav
+      class="bg-white dark:bg-gray-900 shadow sticky top-0 z-50"
+    >
+      <div
+        class="container mx-auto px-6 py-3 flex justify-between items-center"
+      >
+        <div
+          class="flex items-center gap-8"
+        >
+          <a
+            href="/"
+          >
+            <span
+              class="text-2xl font-bold text-blue-700 dark:text-blue-500 tracking-tight"
+            >
+              SoloCartas
+            </span>
+          </a>
+          <div
+            class="hidden md:flex gap-6 items-center"
+          >
+            <a
+              href="/"
+            >
+              Inicio
+            </a>
+            <a
+              href="/about-us"
+            >
+              About Us
+            </a>
+            <a
+              href="/products"
+            >
+              <span>
+                Catálogo
+              </span>
+              <svg
+                class="lucide lucide-chevron-down h-4 w-4 ml-1 text-current transition-transform "
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-4"
+        >
+          <button
+            aria-label="Toggle theme"
+            class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            <svg
+              class="lucide lucide-moon"
+              fill="none"
+              height="20"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+              />
+            </svg>
+          </button>
+          <div
+            class="relative"
+          >
+            <button
+              class="flex items-center"
+            >
+              <svg
+                class="lucide lucide-circle-user-round text-gray-500 dark:text-gray-400"
+                fill="none"
+                height="36"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                width="36"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 20a6 6 0 0 0-12 0"
+                />
+                <circle
+                  cx="12"
+                  cy="10"
+                  r="4"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                />
+              </svg>
+              <svg
+                class="lucide lucide-chevron-down h-5 w-5 ml-1 text-gray-600 dark:text-gray-400 transition-transform "
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="absolute top-full left-0 right-0 bg-gray-700 dark:bg-gray-800 shadow-lg z-40 transition-opacity duration-300 opacity-0 pointer-events-none"
+    >
+      <div
+        class="container mx-auto px-6 py-8"
+      >
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-10"
+        >
+          <div
+            class="space-y-4"
+          >
+            <a
+              href="/products?game=pokemon"
+            >
+              Pokémon
+            </a>
+            <ul
+              class="space-y-2"
+            >
+              <li>
+                <a
+                  href="/products?game=pokemon&product_type=booster"
+                >
+                  Boosters
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/products?game=pokemon&product_type=bundle"
+                >
+                  Bundles
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/products?game=pokemon&product_type=single"
+                >
+                  Singles
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="space-y-4"
+          >
+            <a
+              href="/products?game=yu-gi-oh"
+            >
+              Yu-Gi-Oh!
+            </a>
+            <ul
+              class="space-y-2"
+            >
+              <li>
+                <a
+                  href="/products?game=yu-gi-oh&product_type=booster"
+                >
+                  Boosters
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/products?game=yu-gi-oh&product_type=bundle"
+                >
+                  Bundles
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/products?game=yu-gi-oh&product_type=single"
+                >
+                  Singles
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="space-y-4"
+          >
+            <a
+              href="/products?game=magic-the-gathering"
+            >
+              Magic: The Gathering
+            </a>
+            <ul
+              class="space-y-2"
+            >
+              <li>
+                <a
+                  href="/products?game=magic-the-gathering&product_type=booster"
+                >
+                  Boosters
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/products?game=magic-the-gathering&product_type=bundle"
+                >
+                  Bundles
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/products?game=magic-the-gathering&product_type=single"
+                >
+                  Singles
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

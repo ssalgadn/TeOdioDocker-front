@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["@playwright/test"],
     "lib": [
       "dom",
       "dom.iterable",
@@ -35,6 +36,7 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
+    "tests" ,
     "node_modules"
   ]
 }
