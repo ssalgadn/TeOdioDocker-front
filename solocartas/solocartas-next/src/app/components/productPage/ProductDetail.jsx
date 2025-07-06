@@ -319,7 +319,7 @@ export default function ProductDetail({ product }) {
                   </span>
                 </div>
                 <a
-                  href={priceEntry.url}
+                  href={(priceEntry.store.website_url || priceEntry.url).startsWith('http') ? (priceEntry.store.website_url || priceEntry.url) : `https://${priceEntry.store.website_url || priceEntry.url}` }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 text-sm font-medium"
