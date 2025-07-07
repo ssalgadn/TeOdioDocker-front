@@ -27,9 +27,15 @@ jobs:
       with:
         node-version: '20'
         cache: 'yarn'
+        cache-dependency-path: solocartas/solocartas-next/yarn.lock
 
     - name: Install dependencies
       run: yarn install --frozen-lockfile
+      working-directory: ./solocartas/solocartas-next
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+      working-directory: ./solocartas/solocartas-next
 
     - name: Lint
       run: npm run lint --if-present
@@ -42,6 +48,7 @@ jobs:
 
     - name: Build
       run: npm run build
+      working-directory: ./solocartas/solocartas-next
 
     - name: Start app
       run: npm start &

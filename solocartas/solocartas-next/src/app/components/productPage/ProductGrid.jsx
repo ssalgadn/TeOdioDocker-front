@@ -16,7 +16,7 @@ const CATEGORIES = [
 const TYPES = [
   { value: 'booster', label: 'Booster' },
   { value: 'bundle', label: 'Bundle' },
-  { value: 'single', label: 'Single' },
+  { value: 'singles', label: 'Singles' },
 ];
 
 export default function ProductGrid({ initialProducts }) {
