@@ -78,7 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('id_token', data.id_token);
 
-      // Actualizar el estado inmediatamente después de guardar los tokens
       const userData = parseJwt(data.id_token);
       if (userData) {
         setUser(userData);
@@ -87,16 +86,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       router.push('/');
 
     } catch (err: unknown) {
-      // Aquí podrías registrar el error en un sistema de monitoreo si lo deseas
-      // o lanzar el error para que el componente que llama a login lo maneje.
-      // Por ahora, para que coincida con el comportamiento anterior de no hacer nada explícito con el error en el contexto,
-      // simplemente lo atrapamos. Si el componente que llama necesita saber del error, debería propagarse.
-      // Considera lanzar el error: throw err;
-      // O si quieres que el componente login/page.tsx muestre el error, la función login debe retornar el error.
-      // Por ahora, lo dejamos así para que el build pase, pero esto es un punto a revisar.
       if (err instanceof Error) {
         console.error('Login error:', err.message);
-        throw err; // Re-lanzamos el error para que la UI pueda manejarlo
+        throw err;
       } else {
         console.error('Unknown login error:', err);
         throw new Error('Ocurrió un error desconocido durante el inicio de sesión.');
@@ -121,13 +113,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw new Error(data.detail || 'No se pudo registrar el usuario.');
       }
 
-      // Si el registro fue exitoso, intenta login con las mismas credenciales
       await login(email, password);
 
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Signup error:', error.message);
-        throw error; // Re-lanzamos el error para que la UI pueda manejarlo
+        throw error;
       } else {
         console.error('Unknown signup error:', error);
         throw new Error('Ocurrió un error desconocido durante el registro.');

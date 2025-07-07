@@ -8,7 +8,7 @@ export interface ProductPrice {
   id: number;
   price: number;
   url: string;
-  scrapped_at: string; // Consider using Date type if you parse it
+  scrapped_at: string;
   store: Store;
 }
 
@@ -29,7 +29,6 @@ export interface ProductDetailData extends ProductListItem {
   prices: ProductPrice[];
 }
 
-// For the catalog query parameters
 export interface ProductFilters {
   name?: string;
   min_price?: number;

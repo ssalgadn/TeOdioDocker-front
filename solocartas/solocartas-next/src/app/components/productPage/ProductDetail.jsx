@@ -37,7 +37,6 @@ export default function ProductDetail({ product }) {
   const [ratings, setRatings] = useState({});
   const { isAuthenticated, user } = useAuth();
 
-  // Fetch comments
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -53,7 +52,6 @@ export default function ProductDetail({ product }) {
     fetchComments();
   }, [BACKEND_URL, product.id]);
 
-  // Fetch ratings for stores
   useEffect(() => {
     const fetchRatings = async () => {
       if (!product.prices) return;
@@ -77,7 +75,6 @@ export default function ProductDetail({ product }) {
   }, [BACKEND_URL, product.prices]);
   const { theme } = useTheme();
 
-  // Mock price history data if not available
   const MOCK_PRICE_HISTORY_COUNT = 7;
   const getMockPriceHistory = () => {
     const history = [];
@@ -98,7 +95,6 @@ export default function ProductDetail({ product }) {
     : getMockPriceHistory();
 
   const handleOverlayClick = (e) => {
-    // If the click is on the overlay itself (not its children), close the modal.
     if (e.target === e.currentTarget) {
       setShowPriceHistoryModal(false);
     }
@@ -126,13 +122,13 @@ export default function ProductDetail({ product }) {
       legend: {
         position: 'top',
         labels: {
-          color: theme === 'dark' ? '#E5E7EB' : '#4B5563', // gray-200 dark, gray-600 light
+          color: theme === 'dark' ? '#E5E7EB' : '#4B5563',
         }
       },
       title: {
         display: true,
         text: 'Historial de Precios',
-        color: theme === 'dark' ? '#F3F4F6' : '#1F2937', // gray-100 dark, gray-800 light
+        color: theme === 'dark' ? '#F3F4F6' : '#1F2937',
       },
     },
     scales: {
@@ -140,7 +136,7 @@ export default function ProductDetail({ product }) {
         beginAtZero: false,
         ticks: {
           callback: (value) => formatPriceCLP(value),
-          color: theme === 'dark' ? '#D1D5DB' : '#6B7280', // gray-300 dark, gray-500 light
+          color: theme === 'dark' ? '#D1D5DB' : '#6B7280',
         },
         grid: {
           color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
@@ -160,7 +156,6 @@ export default function ProductDetail({ product }) {
 
 
 
-  // const comments = product.comments || []; // Comments are not part of ProductDetailData from API yet
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6">
@@ -246,7 +241,7 @@ export default function ProductDetail({ product }) {
       {showPriceHistoryModal && priceHistory && priceHistory.length > 0 && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center p-4 z-50 transition-opacity duration-300 ease-in-out"
-          onClick={handleOverlayClick} // Add click handler to overlay
+          onClick={handleOverlayClick}
         >
           <div className="bg-white dark:bg-slate-700 p-6 rounded-lg shadow-xl max-w-2xl w-full">
             <div className="flex justify-between items-center mb-4">
