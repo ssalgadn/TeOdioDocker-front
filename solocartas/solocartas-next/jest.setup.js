@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 
-// Mock next/navigation for components that use it
 import { toHaveNoViolations } from 'jest-axe';
 expect.extend(toHaveNoViolations);
 

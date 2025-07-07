@@ -1,4 +1,4 @@
-'use client'; // Los componentes de error deben ser componentes de cliente
+'use client';
 
 import { useEffect } from 'react';
 
@@ -9,7 +9,6 @@ interface ErrorProps {
 
 export default function ProductsError({ error, reset }: ErrorProps) {
   useEffect(() => {
-    // Puedes registrar el error en un servicio de monitoreo
     console.error(error);
   }, [error]);
 

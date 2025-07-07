@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import LoginPage from '@/app/login/page';
 
-// Mocks
 const mockPush = jest.fn();
 export const mockLogin = jest.fn();
 

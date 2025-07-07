@@ -3,7 +3,6 @@ import CardProduct from '@/app/components/productPage/CardProduct';
 import { formatPriceCLP } from '@/utils/format';
 import { axe } from 'jest-axe';
 
-// Mock next/image as it requires special handling in Jest
 jest.mock('next/image', () => (props) => {
   // eslint-disable-next-line @next/next/no-img-element
   return <img {...props} alt={props.alt} />;
@@ -36,7 +35,6 @@ describe('CardProduct component', () => {
     jest.spyOn(require('next/navigation'), 'useRouter').mockImplementation(() => ({ push: mockPush }));
     render(<CardProduct product={product} />);
 
-    // Click on wrapper div (role not set) – use image alt fallback
     fireEvent.click(screen.getByAltText(`Carta ${product.name}`));
     expect(mockPush).toHaveBeenCalledWith(`/products/${product.id}`);
   });

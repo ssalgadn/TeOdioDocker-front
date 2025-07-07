@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import RegisterPage from '@/app/register/page';
 
-// Shared mocks
 const signupMock = jest.fn();
 export { signupMock as signupMock };
 
