@@ -90,9 +90,16 @@ export default function ProductDetail({ product }) {
     return history;
   };
 
-  const priceHistory = (product.priceHistory && product.priceHistory.length > 0) 
-    ? product.priceHistory 
-    : getMockPriceHistory();
+  const nowLabel = new Date().toLocaleDateString();
+  const hasPriceData = (product.prices && product.prices.length > 0);
+  const priceDatasets = product.prices && product.prices.length > 0 ?
+    product.prices.map(p => ({
+      label: p.store.name,
+      data: [p.price],
+      borderColor: 'rgb(59,130,246)',
+      backgroundColor: 'rgba(59,130,246,0.5)',
+      pointRadius: 6,
+    })) : [];
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -102,18 +109,8 @@ export default function ProductDetail({ product }) {
   const lowestPrice = product.prices && product.prices.length > 0 ? Math.min(...product.prices.map(p => p.price)) : product.min_price || 0;
   
   const chartData = {
-    labels: priceHistory ? priceHistory.map(item => {
-      const date = new Date(item.date);
-      return `${date.getMonth() + 1}/${date.getFullYear()}`;
-    }) : [],
-    datasets: [
-      {
-        label: 'Precio promedio',
-        data: priceHistory ? priceHistory.map(item => item.avgPrice) : [],
-        borderColor: 'rgb(59, 130, 246)',
-        backgroundColor: 'rgba(59, 130, 246, 0.5)',
-      },
-    ],
+    labels: [nowLabel],
+    datasets: priceDatasets,
   };
 
   const chartOptions = useMemo(() => ({
@@ -166,7 +163,7 @@ export default function ProductDetail({ product }) {
             alt={product.name}
             className="w-full max-w-md max-h-96 object-contain mx-auto rounded-lg shadow"
           />
-          {priceHistory && priceHistory.length > 0 && (
+          {hasPriceData && (
             <button
               onClick={() => setShowPriceHistoryModal(true)}
               className="mt-4 w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out"
@@ -238,7 +235,7 @@ export default function ProductDetail({ product }) {
         </div>
       </div>
 
-      {showPriceHistoryModal && priceHistory && priceHistory.length > 0 && (
+      {showPriceHistoryModal && hasPriceData && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center p-4 z-50 transition-opacity duration-300 ease-in-out"
           onClick={handleOverlayClick}
