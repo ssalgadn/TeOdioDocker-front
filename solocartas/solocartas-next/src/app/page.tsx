@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import Image from 'next/image'; // Import Image for potential thematic images
+import Image from 'next/image'; 
 
 interface CategoryCardProps {
   title: string;
   href: string;
-  imageSrc?: string; // Optional image for the card
+  imageSrc?: string;
   bgColorClass: string;
   textColorClass?: string;
   description?: string;

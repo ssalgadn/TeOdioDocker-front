@@ -11,7 +11,7 @@ const StarRating = ({
   color = "text-yellow-400", 
   readonly = false 
 }) => {
-  const [rating, setRating] = useState(Math.round(initialRating)); // Round initial rating
+  const [rating, setRating] = useState(Math.round(initialRating));
   const [hoverRating, setHoverRating] = useState(0);
 
   const handleMouseOver = (index) => {
@@ -43,15 +43,14 @@ const StarRating = ({
             size={size}
             className={`${readonly ? 'cursor-default' : 'cursor-pointer'} ${color}`}
             fill={(hoverRating || rating) >= starValue ? 'currentColor' : 'none'}
-            strokeWidth={1.5} // Ensure outline is visible for unfilled stars
-            onMouseEnter={() => handleMouseOver(starValue)} // Changed from onMouseOver to onMouseEnter for better semantics
+            strokeWidth={1.5}
+            onMouseEnter={() => handleMouseOver(starValue)}
             onMouseLeave={handleMouseLeave}
             onClick={() => handleClick(starValue)}
           />
         );
       })}
-      {/* Optional: Display current rating as text if needed */}
-      {/* <span className="ml-2 text-sm text-gray-600">{rating > 0 ? `${rating}/${count}` : ''}</span> */}
+
     </div>
   );
 };

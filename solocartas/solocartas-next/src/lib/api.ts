@@ -13,7 +13,6 @@ export async function getProducts(filters: ProductFilters): Promise<ProductListI
 
   if (!process.env.BACKEND_URL) {
     console.error("BACKEND_URL environment variable is not set.");
-    // En caso de error, lanzamos una excepción para que sea capturada por error.tsx
     throw new Error("La URL del backend no está configurada.");
   }
 

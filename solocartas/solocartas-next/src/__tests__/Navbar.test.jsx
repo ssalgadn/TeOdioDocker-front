@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import Navbar from '@/app/components/Navbar';
 
-// Mock hooks & components used in Navbar to isolate snapshot
 jest.mock('next-themes', () => ({ useTheme: () => ({ theme: 'light', setTheme: jest.fn() }) }));
 jest.mock('next/navigation', () => ({ usePathname: () => '/', useRouter: () => ({ push: jest.fn() }) }));
 

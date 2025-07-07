@@ -1,11 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import ProductGrid from '@/app/components/productPage/ProductGrid';
 
-// Helper to build the wrapper with desired search params
 const createSearchParams = (params = {}) =>
   new URLSearchParams(Object.entries(params));
 
-// Base mocks
 const mockPush = jest.fn();
 
 jest.mock('next/navigation', () => ({
@@ -14,7 +12,6 @@ jest.mock('next/navigation', () => ({
   useSearchParams: () => createSearchParams(),
 }));
 
-// Mock heavy children & slider
 jest.mock('@/app/components/productPage/CardProduct', () => (props) => (
   <div data-testid="card-product">{props.product?.name}</div>
 ));

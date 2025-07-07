@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import ProductGrid from '@/app/components/productPage/ProductGrid';
 
-// Mock child components / external libs that are heavy or rely on browser APIs
 jest.mock('@/app/components/productPage/CardProduct', () => (props) => (
   <div data-testid="card-product">{props.product.name}</div>
 ));
@@ -10,7 +9,6 @@ jest.mock('multi-range-slider-react', () => () => (
   <div data-testid="slider" />
 ));
 
-// Mock Next.js navigation hooks used inside ProductGrid
 jest.mock('next/navigation', () => ({
   useRouter: () => ({ push: jest.fn() }),
   usePathname: () => '/productos',

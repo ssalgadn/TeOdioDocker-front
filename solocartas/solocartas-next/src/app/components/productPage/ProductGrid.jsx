@@ -32,13 +32,12 @@ function ActualProductGrid({ initialProducts }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // State for filter inputs - initialized from URL search params
   const [search, setSearch] = useState(searchParams.get('name') || '');
   
   const initialMinPrice = parseFloat(searchParams.get('min_price') || '0');
   const initialMaxPrice = parseFloat(searchParams.get('max_price') || '100000');
   const [priceRange, setPriceRange] = useState({ min: initialMinPrice, max: initialMaxPrice });
-  // Base values for the slider, can be dynamic in a future step if needed
+
   const [sliderBaseMin] = useState(0); 
   const [sliderBaseMax] = useState(100000); 
 
@@ -48,7 +47,6 @@ function ActualProductGrid({ initialProducts }) {
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') || '1'));
   const [itemsPerPage, setItemsPerPage] = useState(parseInt(searchParams.get('limit') || ITEMS_PER_PAGE_OPTIONS[0].toString()));
 
-  // Function to update URL search params and trigger navigation
   const updateFiltersInUrl = useCallback((newFilters) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     Object.keys(newFilters).forEach(key => {
@@ -67,7 +65,6 @@ function ActualProductGrid({ initialProducts }) {
     router.push(`${pathname}?${current.toString()}`);
   }, [searchParams, router, pathname, sliderBaseMax]);
 
-  // Handler for the "Aplicar filtros" button
   const handleApplyFilters = () => {
     const filtersToApply = {
       name: search,
