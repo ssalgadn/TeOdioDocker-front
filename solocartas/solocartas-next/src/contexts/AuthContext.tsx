@@ -136,11 +136,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(null);
     setIsAuthenticated(false);
 
-    const domain = process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL;
-    const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
-    const returnTo = window.location.origin; // o 'http://localhost:3000' directamente
-
-    window.location.href = `${domain}/v2/logout?client_id=${clientId}&returnTo=${encodeURIComponent(returnTo)}`;
+    window.location.reload();
   };
 
   return (
